@@ -7,5 +7,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "common-tags": "^1.4.0",
+    "glob": "^7.1.2"
+  }
 }
