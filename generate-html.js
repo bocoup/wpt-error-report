@@ -110,6 +110,14 @@ li {
 <pre>
 
 </pre>
+<h1>wpt-error-report</h1>
+<p>
+  The following results consolidate broken test files in <code>e511e5e8af</code> of the <a href="http://github.com/w3c/web-platform-tests">web platform tests</a> test suite that cause <a href="http://wpt.fyi">test results</a> to be inconsistent.
+</p>
+<p>
+See <a href="https://github.com/GoogleChrome/wptdashboard/issues/98">GoogleChrome/wptdashboard/issues/98</a> for more discussion.
+</p>
+
 <button>Toggle All</button>
 ${html}
 
