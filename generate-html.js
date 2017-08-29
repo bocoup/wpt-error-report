@@ -3,12 +3,8 @@ const ct = require("common-tags");
 
 const data = require(`./consolidated.json`);
 
-function toDetails(summary, contents, didnotPercent) {
-  let color = getColorForPercentage(didnotPercent);
-  let didnotPercentFormated = (didnotPercent*100).toFixed(2);
-  let percentDisplay = didnotPercent ? `<figure class="percent" style="background:${color}">${didnotPercentFormated}%</figure>` : '';
-
-  return `<details data-percent="${didnotPercentFormated}"><summary>${summary} ${percentDisplay}</summary>${contents}</details>`;
+function toDetails(summary, contents) {
+  return `<details>${summary} ${contents}</details>`;
 }
 
 function toList(records) {
@@ -60,19 +56,19 @@ function getColorForPercentage(pct) {
       break;
     }
   }
-  let lower = percentColors[i - 1];
-  let upper = percentColors[i];
+
+  let { [ i - 1 ]: lower, [i]: upper } = percentColors;
+
   let range = upper.pct - lower.pct;
   let rangePct = (pct - lower.pct) / range;
   let pctLower = 1 - rangePct;
   let pctUpper = rangePct;
-  let color = {
-    r: Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper),
-    g: Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper),
-    b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper)
-  };
-  return 'rgb(' + [color.r, color.g, color.b].join(',') + ')';
-  // or output as hex if preferred
+
+  let r = Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper);
+  let g = Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper);
+  let b = Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper);
+
+  return `rgb(${r}, ${g}, ${b})`;
 }
 
 function toHTML(data) {
@@ -87,10 +83,29 @@ function toHTML(data) {
       } else {
         let expected = total('expected', data[item]);
         let completed = total('completed', data[item]);
-        let didnot = expected - completed;
-        let didnotPercent = completed/expected;
-        let summary = `<span>${item}</span> <figure class="did-not">(${didnot.toLocaleString()} of ${expected.toLocaleString()} were not executed)</figure>`;
-        html += toDetails(summary, toHTML(data[item]), didnotPercent);
+
+        let didNotRun = expected - completed;
+        let percent = completed/expected;
+
+
+        let color = getColorForPercentage(percent);
+        let didnotPercentFormated = (percent*100).toFixed(2);
+        let percentDisplay = percent ? `
+          <figure class="percent" style="background:${color}">
+            ${didnotPercentFormated}%
+          </figure>` : '';
+
+        let summary = `
+        <summary data-percent="${didnotPercentFormated}">
+          <span>${item}</span>
+          <figure class="did-not">
+            (${didNotRun.toLocaleString()} of
+            ${expected.toLocaleString()} were not executed)
+          </figure>
+          ${percentDisplay}
+        </summary>
+        `;
+        html += toDetails(summary, toHTML(data[item]));
       }
     }
   }

@@ -19,7 +19,7 @@
 
 <nav>
   <button class="toggle">Toggle All Results</button>
-  <button class="sort" data-mode="by-failure">Sort Results by Failure</button>
+  <button class="sort" data-mode="by-percent">Sort Results by Percent Not Run</button>
 </nav>
 
 <script>
@@ -45,16 +45,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (event.target.dataset.mode === "by-failure") {
+    if (event.target.dataset.mode === "by-percent") {
       event.target.innerText="Sort Alphabetically"
       event.target.dataset.mode="by-alpha"
-      resultsToDOM(resultsArr.sort(sortByFailures));
+      resultsToDOM(resultsArr.sort(sortByPercent));
       return;
     }
 
     if (event.target.dataset.mode === "by-alpha") {
-      event.target.innerText="Sort Results by Failure"
-      event.target.dataset.mode="by-failure";
+      event.target.innerText="Sort Results by Percent Not Run"
+      event.target.dataset.mode="by-percent";
       resultsToDOM(resultsArr.sort(sortByAlpha));
       return;
     }
@@ -69,12 +69,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  function sortByFailures (a, b) {
-    return parseInt(a.dataset.percent) === parseInt(b.dataset.percent) ? 0 : (parseInt(a.dataset.percent) > parseInt(b.dataset.percent) ? -1 : 1);
+  function sortByPercent (a, b) {
+    let aPercent = parseInt(a.firstElementChild.dataset.percent);
+    let bPercent = parseInt(b.firstElementChild.dataset.percent);
+
+    return aPercent === bPercent ? 0 : (aPercent > bPercent ? -1 : 1);
   };
 
   function sortByAlpha (a, b) {
-    return a.innerText.substr(0,10) === b.innerText.substr(0,10) ? 0 : (a.innerText.substr(0,10) > b.innerText.substr(0,10)) ? 1 : -1;
+    let aText = a.firstElementChild.innerText.substr(0,10);
+    let bText = b.firstElementChild.innerText.substr(0,10);
+
+    return aText === bText ? 0 : (aText > bText ? 1 : -1);
   };
 
   function resultsToDOM (resultsArr) {
