@@ -78,7 +78,7 @@ function toHTML(data) {
   for (let item of keys) {
     if (typeof data[item] === "object") {
       if (Array.isArray(data[item])) {
-        let summary = `${item} (<a href="https://github.com/w3c/web-platform-tests/tree/master${data[item][0].test}" target=_blank>source</a>)`;
+        let summary = `<summary>${item} (<a href="https://github.com/w3c/web-platform-tests/tree/master${data[item][0].test}" target=_blank>source</a>)</summary>`;
         html += toDetails(summary, toList(data[item]));
       } else {
         let expected = total('expected', data[item]);
