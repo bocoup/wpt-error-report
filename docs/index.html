@@ -27,69 +27,86 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Add results to DOM
   let results = document.querySelector('link[rel="import"]');
-  let main = results.import.querySelector('main');
-  document.querySelector('body').appendChild(main);
 
-  //Bind toggle and sorts
-  let isOpen = false;
-  document.querySelector('body').addEventListener("click", (event) => {
-    if (event.target.tagName !== "BUTTON") {
-      return
-    }
-
-    if (event.target.className === "toggle") {
-      isOpen = !isOpen;
-      [...document.querySelectorAll("details")].forEach(detail => {
-        detail.open = isOpen;
-      });
-      return;
-    }
-
-    if (event.target.dataset.mode === "by-percent") {
-      event.target.innerText="Sort Alphabetically"
-      event.target.dataset.mode="by-alpha"
-      resultsToDOM(resultsArr.sort(sortByPercent));
-      return;
-    }
-
-    if (event.target.dataset.mode === "by-alpha") {
-      event.target.innerText="Sort Results by Percent Not Run"
-      event.target.dataset.mode="by-percent";
-      resultsToDOM(resultsArr.sort(sortByAlpha));
-      return;
-    }
-
-  });
-
-  // Setup results for sorting
-  let resultsArr = [];
-  main.childNodes.forEach(function(elem){
-    if (elem.nodeType == 1) { // get rid of the whitespace text nodes
-      resultsArr.push(elem);
-    }
-  });
-
-  function sortByPercent (a, b) {
-    let aPercent = parseInt(a.firstElementChild.dataset.percent);
-    let bPercent = parseInt(b.firstElementChild.dataset.percent);
-
-    return aPercent === bPercent ? 0 : (aPercent > bPercent ? -1 : 1);
-  };
-
-  function sortByAlpha (a, b) {
-    let aText = a.firstElementChild.innerText.substr(0,10);
-    let bText = b.firstElementChild.innerText.substr(0,10);
-
-    return aText === bText ? 0 : (aText > bText ? 1 : -1);
-  };
-
-  function resultsToDOM (resultsArr) {
-    main.innerHTML = '';
-    resultsArr.forEach(function(elem){
-      main.appendChild(elem);
-    });
+  if (!results.import) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      injectResults(this.responseXML);
+    };
+    xhr.open("GET", "results.html");
+    xhr.responseType = "document";
+    xhr.send();
+  } else {
+    setTimeout(function(){
+      injectResults( results.import );
+    },0);
   }
 
+  function injectResults( results ) {
+    let main = results.querySelector('main');
+    document.querySelector('body').appendChild(main);
+
+    //Bind toggle and sorts
+    let isOpen = false;
+    document.querySelector('body').addEventListener("click", (event) => {
+      if (event.target.tagName !== "BUTTON") {
+        return
+      }
+
+      if (event.target.className === "toggle") {
+        isOpen = !isOpen;
+        [...document.querySelectorAll("details")].forEach(detail => {
+          detail.open = isOpen;
+        });
+        return;
+      }
+
+      if (event.target.dataset.mode === "by-percent") {
+        event.target.innerText="Sort Alphabetically"
+        event.target.dataset.mode="by-alpha"
+        resultsToDOM(resultsArr.sort(sortByPercent));
+        return;
+      }
+
+      if (event.target.dataset.mode === "by-alpha") {
+        event.target.innerText="Sort Results by Percent Not Run"
+        event.target.dataset.mode="by-percent";
+        resultsToDOM(resultsArr.sort(sortByAlpha));
+        return;
+      }
+
+    });
+
+    // Setup results for sorting
+    let resultsArr = [];
+    main.childNodes.forEach(function(elem){
+      if (elem.nodeType == 1) { // get rid of the whitespace text nodes
+        resultsArr.push(elem);
+      }
+    });
+
+    function sortByPercent (a, b) {
+      let aPercent = parseInt(a.firstElementChild.dataset.percent);
+      let bPercent = parseInt(b.firstElementChild.dataset.percent);
+
+      return aPercent === bPercent ? 0 : (aPercent > bPercent ? -1 : 1);
+    };
+
+    function sortByAlpha (a, b) {
+      let aText = a.firstElementChild.innerText.substr(0,10);
+      let bText = b.firstElementChild.innerText.substr(0,10);
+
+      return aText === bText ? 0 : (aText > bText ? 1 : -1);
+    };
+
+    function resultsToDOM (resultsArr) {
+      main.innerHTML = '';
+      resultsArr.forEach(function(elem){
+        main.appendChild(elem);
+      });
+    }
+
+  }
 
 }, false);
 </script>
