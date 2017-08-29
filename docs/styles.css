@@ -34,6 +34,11 @@ ul:before {
   left: 0;
   border: 0px;
 }
+
+li:not(:last-child) {
+  border-bottom: 1px solid #ccc
+}
+
 button, details {
   margin-left: 1em;
 }
@@ -59,6 +64,7 @@ details[open] details:not(:last-child) {
 }
 summary {
   width: 100%;
+  padding: 4px;
 }
 summary span {
   min-width: 230px;
