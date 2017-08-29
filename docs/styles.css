@@ -1,20 +1,22 @@
 body {
   background: white;
-  margin: 0px;
   font-family: sans-serif;
   font-size: 1em;
+  margin: 0px;
 }
 header {
   background: #e2e0e0;
-  padding: 30px;
 }
 nav {
   background: #f1f0f0;
   margin: 0 0 20px 0;
-  padding: 30px 50px;
+  text-align: right;
+
 }
-main {
+main, section  {
   padding: 30px;
+  margin: 0 auto;
+  max-width: 800px;
 }
 ul {
   margin: 0 0 0 1em; /* indentation */
@@ -35,12 +37,8 @@ ul:before {
   border: 0px;
 }
 
-li:not(:last-child) {
+details li:not(:last-child) {
   border-bottom: 1px solid #ccc
-}
-
-button, details {
-  margin-left: 1em;
 }
 details {
   padding: 3px 3px 3px 20px;

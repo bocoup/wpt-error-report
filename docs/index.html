@@ -6,22 +6,40 @@
 </head>
 <body>
 <header>
-  <h1>
-    wpt-error-report
-  </h1>
-  <p>
-    The following results consolidate broken test files in <a href="http://github.com/w3c/web-platform-tests">web platform tests</a> test suite that cause <a href="http://wpt.fyi">test results</a> to be inconsistent. Running at <code>e511e5e8af</code>.
-  </p>
-  <p>
-    See <a href="https://github.com/GoogleChrome/wptdashboard/issues/98">GoogleChrome/wptdashboard/issues/98</a> for more discussion.
-  </p>
+  <section>
+    <h1>
+      wpt-error-report
+    </h1>
+    <p>
+      The following results represent a consolidated report of <a href="http://github.com/w3c/web-platform-tests">web-platform-tests</a> (WPT) test files that fail to run to completion across all target browsers. These incomplete test runs cause inconsistent test completion counts when running the WPT test suite.
+    </p>
+
+    <p>
+      These results were collected from a run of <a href="https://github.com/w3c/web-platform-tests/tree/e511e5e8af">WPT at <code>e511e5e8af</code></a>, which was generated from the <a href="http://wpt.fyi">wpt.fyi</a> dashboard data sources.
+
+      Source results data for all WPT tests are available here:
+      <li><a href="https://storage.googleapis.com/wptd/e511e5e8af/chrome-62.0-linux-summary.json.gz">Chrome on Linux WPT results JSON</a></li>
+      <li><a href="https://storage.googleapis.com/wptd/e511e5e8af/edge-15-windows-10-sauce-summary.json.gz">Edge on Windows WPT results JSON</a></li>
+      <li><a href="https://storage.googleapis.com/wptd/e511e5e8af/firefox-57.0-linux-summary.json.gz">Firefox on Linux WPT results JSON</a></li>
+      <li><a href="https://storage.googleapis.com/wptd/e511e5e8af/safari-10-macos-10.12-sauce-summary.json.gz">Safari on Linux WPT results JSON</a></li>
+    </p>
+    <p>
+      The consolidated "unrun test cases" source results data is available in this project's repo:
+      <li><a href="https://raw.githubusercontent.com/bocoup/wpt-error-report/master/consolidated.json">consolidated.json</a></li>
+    </p>
+    <p>
+      See <a href="https://github.com/GoogleChrome/wptdashboard/issues/98">GoogleChrome/wptdashboard/issues/98</a> for more discussion.
+    </p>
+
+  </section>
 </header>
 
 <nav>
-  <button class="toggle">Toggle All Results</button>
-  <button class="sort" data-mode="by-percent">Sort Results by Percent Not Run</button>
+  <section>
+    <button class="toggle">Toggle All Results</button>
+    <button class="sort" data-mode="by-percent">Sort Results by Percent Not Run</button>
+  </section>
 </nav>
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
