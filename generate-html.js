@@ -44,10 +44,10 @@ function total(field, data) {
   return value;
 }
 
-var percentColors = [
+const percentColors = [
   {pct: 0.0, color: { r: 0xf5, g: 0xd7, b: 0x78}},
   {pct: 0.5, color: { r: 0xf3, g: 0x6e, b: 0x6e}},
-  {pct: 1.0, color: { r: 0xd0, g: 0x0, b: 0x0}}
+  {pct: 1.0, color: { r: 0xd0, g: 0x00, b: 0x00}},
 ];
 
 function getColorForPercentage(pct) {
