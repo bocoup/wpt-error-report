@@ -61,7 +61,7 @@ summary {
   width: 100%;
 }
 summary span {
-  width: 230px;
+  min-width: 230px;
   display: inline-block;
 }
 summary figure {
