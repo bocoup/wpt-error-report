@@ -85,7 +85,7 @@ function toHTML(data) {
         let completed = total('completed', data[item]);
 
         let didNotRun = expected - completed;
-        let percent = completed/expected;
+        let percent = didNotRun/expected;
 
 
         let color = getColorForPercentage(percent);
