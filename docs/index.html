@@ -9,16 +9,27 @@
   <section>
     <h1>wpt-error-report</h1>
     <p>
-      The following results represent a consolidated report of <a href="http://github.com/w3c/web-platform-tests">web-platform-tests</a> (WPT) test files that fail to run to completion across all target browsers. These incomplete test runs cause inconsistent test completion counts when running the WPT test suite.
+      The following results represent a consolidated report of <a href="http://github.com/w3c/web-platform-tests">web-platform-tests</a> (WPT) test files that fail to run to completion across all target browsers. These incomplete test runs cause inconsistent test completion counts between browsers when running the WPT test suite.
     </p>
+
+    <h3>Preliminary Analysis</h3>
+    <p>
+      The most likely reason for a test file failing in this way, with inconsistent test counts, is the presence of a JavaScript error. This can manifest in myriad ways. Here are some helpful starting points for determining the cause of an incomplete test run in one of the test files:
+    </p>
+    <ul>
+      <li>Is there an assumption about an API method that's not yet fully implemented?</li>
+      <li>Is there an assumption about an API surface property that's not yet fully implemented?</li>
+      <li>Is it an async test that does not resolve before the test harness times out?</li>
+    </ul>
+
     <h3>How can you help</h3>
     <ol>
       <li>Find the offending test file you'd like to tackle in the list below.</li>
       <li>Fork the <a href="https://github.com/w3c/web-platform-tests">w3c/web-platform-tests</a> repository.</li>
       <li>Follow the steps at <a href="https://github.com/w3c/web-platform-tests#setting-up-the-repo">w3c/web-platform-tests#setting-up-the-repo</a>.</li>
-      <li>Open your selected file in a browser that it is shown to be failing below.</li>
-      <li>Figure out why the tests in the file do not run to completion.</li>
-      <li>Fix that problem, commit your work in a branch of on your fork of WPT, and open <a href="https://help.github.com/articles/about-pull-requests/">a pull request</a>. </li>
+      <li>Open your selected file in a browser that it is shown to be failing in the report below.</li>
+      <li>Figure out why the tests in the file do not run to completion in the relevant browser.</li>
+      <li>Fix that problem, commit your work in a branch on your fork of WPT, and open <a href="https://help.github.com/articles/about-pull-requests/">a pull request</a>.</li>
       <li>
         Here are some friendly people who you can tag as a reviewer on your pull request to get some extra support:
         <ul>
@@ -30,18 +41,10 @@
           <li>Interested in joining this list? <a href="https://github.com/bocoup/wpt-error-report/issues/2">Sign up here</a></li>
         </ul>
       </li>
+      <li>
+        Tweet at us at <a href="http://twitter.com/bocoup">@bocoup</a>, to let us know about your contribution so we can high five.
+      </li>
     </ol>
-
-    <h3>Analysis</h3>
-    <p>
-      The most likely reason that a test does not run to completion is a JavaScript error that's not handled correctly. This can manifest in myriad ways. Here are some helpful starting points for determining the cause of an incomplete test run in one of the test files:
-    </p>
-
-    <ul>
-      <li>Is there an assumption about an API method that's not yet fully implemented?</li>
-      <li>Is there an assumption about an API surface property that's not yet fully implemented?</li>
-      <li>Is it an async test that does not resolve before the test harness times out?</li>
-    </ul>
   </section>
 </header>
 <nav>
