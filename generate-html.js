@@ -114,10 +114,5 @@ function toHTML(data) {
 }
 
 const html = toHTML(data);
-const report = `
-  <main>
-    ${html}
-  </main>
-`;
 
-fs.writeFileSync(`./docs/results.html`, report);
+fs.writeFileSync(`./docs/results.html`, html);

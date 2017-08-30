@@ -7,13 +7,54 @@
 <body>
 <header>
   <section>
-    <h1>
-      wpt-error-report
-    </h1>
+    <h1>wpt-error-report</h1>
     <p>
       The following results represent a consolidated report of <a href="http://github.com/w3c/web-platform-tests">web-platform-tests</a> (WPT) test files that fail to run to completion across all target browsers. These incomplete test runs cause inconsistent test completion counts when running the WPT test suite.
     </p>
+    <h3>How can you help</h3>
+    <ol>
+      <li>Find the offending test file you'd like to tackle in the list below.</li>
+      <li>Fork the <a href="https://github.com/w3c/web-platform-tests">w3c/web-platform-tests</a> repository.</li>
+      <li>Follow the steps at <a href="https://github.com/w3c/web-platform-tests#setting-up-the-repo">w3c/web-platform-tests#setting-up-the-repo</a>.</li>
+      <li>Open your selected file in a browser that it is shown to be failing below.</li>
+      <li>Figure out why the tests in the file do not run to completion.</li>
+      <li>Fix that problem, commit your work in a branch of on your fork of WPT, and open <a href="https://help.github.com/articles/about-pull-requests/">a pull request</a>. </li>
+      <li>
+        Here are some friendly people who you can tag as a reviewer on your pull request to get some extra support:
+        <ul>
+          <li><a href="http://github.com/rwaldron">@rwaldron</a></li>
+          <li><a href="http://github.com/bobholt">@bobholt</a></li>
+          <li><a href="http://github.com/jugglinmike">@jugglinmike</a></li>
+          <li><a href="http://github.com/boazsender">@boazsender</a></li>
+          <li><a href="http://github.com/leobalter">@leobalter</a></li>
+          <li>Interested in joining this list? <a href="https://github.com/bocoup/wpt-error-report/issues/2">Sign up here</a></li>
+        </ul>
+      </li>
+    </ol>
 
+    <h3>Analysis</h3>
+    <p>
+      The most likely reason that a test does not run to completion is a JavaScript error that's not handled correctly. This can manifest in myriad ways. Here are some helpful starting points for determining the cause of an incomplete test run in one of the test files:
+    </p>
+
+    <ul>
+      <li>Is there an assumption about an API method that's not yet fully implemented?</li>
+      <li>Is there an assumption about an API surface property that's not yet fully implemented?</li>
+      <li>Is it an async test that does not resolve before the test harness times out?</li>
+    </ul>
+  </section>
+</header>
+<nav>
+  <section>
+    <button class="toggle">Toggle All Results</button>
+    <button class="sort" data-mode="by-percent">Sort Results by Percent Not Run</button>
+  </section>
+</nav>
+<main>
+
+</main>
+<footer>
+  <section>
     <p>
       These results were collected from a run of <a href="https://github.com/w3c/web-platform-tests/tree/e511e5e8af">WPT at <code>e511e5e8af</code></a>, which was generated from the <a href="http://wpt.fyi">wpt.fyi</a> dashboard data sources.
 
@@ -30,16 +71,8 @@
     <p>
       See <a href="https://github.com/GoogleChrome/wptdashboard/issues/98">GoogleChrome/wptdashboard/issues/98</a> for more discussion.
     </p>
-
   </section>
-</header>
-
-<nav>
-  <section>
-    <button class="toggle">Toggle All Results</button>
-    <button class="sort" data-mode="by-percent">Sort Results by Percent Not Run</button>
-  </section>
-</nav>
+</footer>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -55,14 +88,15 @@ document.addEventListener("DOMContentLoaded", () => {
     xhr.responseType = "document";
     xhr.send();
   } else {
-    setTimeout(function(){
-      injectResults( results.import );
-    },0);
+    setTimeout(function() {
+      injectResults(results.import);
+    }, 0);
   }
 
-  function injectResults( results ) {
-    let main = results.querySelector('main');
-    document.querySelector('body').appendChild(main);
+  function injectResults(results) {
+    let nodes = results.querySelector('body').children;
+    let main = document.querySelector('main');
+    resultsToDOM(nodes);
 
     //Bind toggle and sorts
     let isOpen = false;
@@ -80,46 +114,41 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (event.target.dataset.mode === "by-percent") {
-        event.target.innerText="Sort Alphabetically"
-        event.target.dataset.mode="by-alpha"
-        resultsToDOM(resultsArr.sort(sortByPercent));
+        event.target.innerText = "Sort Alphabetically"
+        event.target.dataset.mode = "by-alpha"
+        resultsToDOM(sortables.sort(sortByPercent));
         return;
       }
 
       if (event.target.dataset.mode === "by-alpha") {
-        event.target.innerText="Sort Results by Percent Not Run"
-        event.target.dataset.mode="by-percent";
-        resultsToDOM(resultsArr.sort(sortByAlpha));
+        event.target.innerText = "Sort Results by Percent Not Run"
+        event.target.dataset.mode = "by-percent";
+        resultsToDOM(sortables.sort(sortByAlpha));
         return;
       }
 
     });
 
     // Setup results for sorting
-    let resultsArr = [];
-    main.childNodes.forEach(function(elem){
-      if (elem.nodeType == 1) { // get rid of the whitespace text nodes
-        resultsArr.push(elem);
-      }
-    });
+    let sortables = [...main.children];
 
-    function sortByPercent (a, b) {
+    function sortByPercent(a, b) {
       let aPercent = parseInt(a.firstElementChild.dataset.percent);
       let bPercent = parseInt(b.firstElementChild.dataset.percent);
 
       return aPercent === bPercent ? 0 : (aPercent > bPercent ? -1 : 1);
     };
 
-    function sortByAlpha (a, b) {
-      let aText = a.firstElementChild.innerText.substr(0,10);
-      let bText = b.firstElementChild.innerText.substr(0,10);
+    function sortByAlpha(a, b) {
+      let aText = a.firstElementChild.innerText.substr(0, 10);
+      let bText = b.firstElementChild.innerText.substr(0, 10);
 
       return aText === bText ? 0 : (aText > bText ? 1 : -1);
     };
 
-    function resultsToDOM (resultsArr) {
+    function resultsToDOM(resultsArr) {
       main.innerHTML = '';
-      resultsArr.forEach(function(elem){
+      [...resultsArr].forEach(function(elem) {
         main.appendChild(elem);
       });
     }
