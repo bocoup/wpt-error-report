@@ -91,18 +91,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // create a reference to our main dynamic area in the report
-  let main = document.querySelector('main');
+  let main = document.querySelector("main");
 
   // Get the results as string of HTML
-  fetch('results.html').then((response) => {
+  fetch("results.html").then(response => {
     return response.text();
-  }).then((resultsFrag) => {
-    //put the results in to the DOM
-    main.innerHTML = resultsFrag;
+  }).then(html => {
+    // put the results in to the DOM
+    main.innerHTML = html;
   }).then(() => {
-    //Bind toggle and sorting button handlers
+    // Bind toggle and sorting button handlers
     let isOpen = false;
-    document.querySelector('body').addEventListener("click", (event) => {
+    document.querySelector("body").addEventListener("click", event => {
       if (event.target.tagName !== "BUTTON") {
         return;
       }
@@ -131,14 +131,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-    // Setup results for sorting
+    // Setup details elements for sorting
     let sortables = [...toIterable(main.children)];
 
     // Logic for sorting by percent failures
     function sortByPercent(a, b) {
       let aPercent = parseInt(a.firstElementChild.dataset.percent);
       let bPercent = parseInt(b.firstElementChild.dataset.percent);
-
       return aPercent === bPercent ? 0 : (aPercent > bPercent ? -1 : 1);
     };
 
@@ -146,12 +145,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function sortByAlpha(a, b) {
       let aText = a.firstElementChild.innerText.substr(0, 10);
       let bText = b.firstElementChild.innerText.substr(0, 10);
-
       return aText === bText ? 0 : (aText > bText ? 1 : -1);
     };
 
     function appendNodesToMain(nodes) {
-      main.innerHTML = '';
+      main.innerHTML = "";
       [...toIterable(nodes)].forEach(elem => main.appendChild(elem));
     }
   });
