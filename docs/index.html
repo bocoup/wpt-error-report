@@ -61,14 +61,18 @@
       These results were collected from a run of <a href="https://github.com/w3c/web-platform-tests/tree/e511e5e8af">WPT at <code>e511e5e8af</code></a>, which was generated from the <a href="http://wpt.fyi">wpt.fyi</a> dashboard data sources.
 
       Source results data for all WPT tests are available here:
-      <li><a href="https://storage.googleapis.com/wptd/e511e5e8af/chrome-62.0-linux-summary.json.gz">Chrome on Linux WPT results JSON</a></li>
-      <li><a href="https://storage.googleapis.com/wptd/e511e5e8af/edge-15-windows-10-sauce-summary.json.gz">Edge on Windows WPT results JSON</a></li>
-      <li><a href="https://storage.googleapis.com/wptd/e511e5e8af/firefox-57.0-linux-summary.json.gz">Firefox on Linux WPT results JSON</a></li>
-      <li><a href="https://storage.googleapis.com/wptd/e511e5e8af/safari-10-macos-10.12-sauce-summary.json.gz">Safari on Linux WPT results JSON</a></li>
+      <ul>
+        <li><a href="https://storage.googleapis.com/wptd/e511e5e8af/chrome-62.0-linux-summary.json.gz">Chrome on Linux WPT results JSON</a></li>
+        <li><a href="https://storage.googleapis.com/wptd/e511e5e8af/edge-15-windows-10-sauce-summary.json.gz">Edge on Windows WPT results JSON</a></li>
+        <li><a href="https://storage.googleapis.com/wptd/e511e5e8af/firefox-57.0-linux-summary.json.gz">Firefox on Linux WPT results JSON</a></li>
+        <li><a href="https://storage.googleapis.com/wptd/e511e5e8af/safari-10-macos-10.12-sauce-summary.json.gz">Safari on Linux WPT results JSON</a></li>
+      </ul>
     </p>
     <p>
       The consolidated "unrun test cases" source results data is available in this project's repo:
-      <li><a href="https://raw.githubusercontent.com/bocoup/wpt-error-report/master/consolidated.json">consolidated.json</a></li>
+      <ul>
+        <li><a href="https://raw.githubusercontent.com/bocoup/wpt-error-report/master/consolidated.json">consolidated.json</a></li>
+      </ul>
     </p>
     <p>
       The above failures are responsible for the inconsistent test completion counts between browsers showing up in <a href="http://wpt.fyi">wpt.fyi</a>. See <a href="https://github.com/GoogleChrome/wptdashboard/issues/98">GoogleChrome/wptdashboard/issues/98</a> for more discussion on this.
@@ -77,6 +81,15 @@
 </footer>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+
+  if (document.createElement("details") instanceof HTMLUnknownElement) {
+    document.getElementById("report").innerHTML = `
+    This report uses Details/Summary Elements to organize information. If you're viewing this report in Microsoft Edge, visit <a href="https://wpdev.uservoice.com/forums/257854-microsoft-edge-developer/suggestions/6261266-details-summary-elements">Details/Summary Elements</a> for implementation status. 
+    `;
+
+    document.querySelector("nav").hidden = true;
+    return;
+  }
 
   // Add results to DOM
   let results = document.querySelector('link[rel="import"]');
@@ -98,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function injectResults(results) {
     let nodes = results.querySelector('body').children;
     let main = document.querySelector('main');
-    resultsToDOM(nodes);
+    appendNodesToMain(nodes);
 
     //Bind toggle and sorts
     let isOpen = false;
@@ -118,14 +131,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (event.target.dataset.mode === "by-percent") {
         event.target.innerText = "Sort Alphabetically"
         event.target.dataset.mode = "by-alpha"
-        resultsToDOM(sortables.sort(sortByPercent));
+        appendNodesToMain(sortables.sort(sortByPercent));
         return;
       }
 
       if (event.target.dataset.mode === "by-alpha") {
         event.target.innerText = "Sort Results by Percent Not Run"
         event.target.dataset.mode = "by-percent";
-        resultsToDOM(sortables.sort(sortByAlpha));
+        appendNodesToMain(sortables.sort(sortByAlpha));
         return;
       }
 
@@ -148,11 +161,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return aText === bText ? 0 : (aText > bText ? 1 : -1);
     };
 
-    function resultsToDOM(resultsArr) {
+    function appendNodesToMain(nodes) {
       main.innerHTML = '';
-      [...toIterable(resultsArr)].forEach(function(elem) {
-        main.appendChild(elem);
-      });
+      [...toIterable(nodes)].forEach(elem => main.appendChild(elem));
     }
   }
 
