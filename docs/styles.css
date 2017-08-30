@@ -4,17 +4,23 @@ body {
   font-size: 1em;
   margin: 0px;
 }
-header , footer {
+h1, h2, h3 {
+  margin: 20px 0px 5px 0px;
+}
+header p, header ul, header ol {
+  margin: 0px;
+}
+header, footer {
   background: #e2e0e0;
 }
 nav {
   background: #f1f0f0;
   margin: 0 0 20px 0;
   text-align: right;
-
+  padding: 10px 0;
 }
 main, section  {
-  padding: 30px;
+  padding: 10px 0 20px 0;
   margin: 0 auto;
   max-width: 800px;
 }

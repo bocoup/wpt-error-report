@@ -9,12 +9,12 @@
   <section>
     <h1>wpt-error-report</h1>
     <p>
-      The following results represent a consolidated report of <a href="http://github.com/w3c/web-platform-tests">web-platform-tests</a> (WPT) test files that fail to run to completion across all target browsers. These incomplete test runs cause inconsistent test completion counts between browsers when running the WPT test suite.
+      The following report lists all test completion errors in <a href="http://github.com/w3c/web-platform-tests">web-platform-tests</a> (WPT). These are a meta kind of test error, wherein some or all of the tests in a given test file fail to complete running. In this scenario, neither a "pass" or a "fail" are reported, but rather the test itself fails to complete in one or more browsers. Removing these types of failures will make WPT more useful for cross browser standards conformance management.
     </p>
 
     <h3>Preliminary Analysis</h3>
     <p>
-      The most likely reason for a test file failing in this way, with inconsistent test counts, is the presence of a JavaScript error. This can manifest in myriad ways. Here are some helpful starting points for determining the cause of an incomplete test run in one of the test files:
+      The most likely reason for a test file to be in this report is because of a JavaScript error. This can manifest in myriad ways. Here are some helpful starting questions for determining the cause of an incomplete test run in a given test file:
     </p>
     <ul>
       <li>Is there an assumption about an API method that's not yet fully implemented?</li>
@@ -24,10 +24,9 @@
 
     <h3>How can you help</h3>
     <ol>
-      <li>Find the offending test file you'd like to tackle in the list below.</li>
-      <li>Fork the <a href="https://github.com/w3c/web-platform-tests">w3c/web-platform-tests</a> repository.</li>
-      <li>Follow the steps at <a href="https://github.com/w3c/web-platform-tests#setting-up-the-repo">w3c/web-platform-tests#setting-up-the-repo</a>.</li>
-      <li>Open your selected file in a browser that it is shown to be failing in the report below.</li>
+      <li>Find the offending test file you'd like to tackle in the report below.</li>
+      <li>Fork the <a href="https://github.com/w3c/web-platform-tests">w3c/web-platform-tests</a> repository, and follow the steps for <a href="https://github.com/w3c/web-platform-tests#setting-up-the-repo">setting-up-the-repo</a>.</li>
+      <li>Open your selected file in a browser that it is shown to be failing in below.</li>
       <li>Figure out why the tests in the file do not run to completion in the relevant browser.</li>
       <li>Fix that problem, commit your work in a branch on your fork of WPT, and open <a href="https://help.github.com/articles/about-pull-requests/">a pull request</a>.</li>
       <li>
@@ -53,7 +52,7 @@
     <button class="sort" data-mode="by-percent">Sort Results by Percent Not Run</button>
   </section>
 </nav>
-<main>
+<main id="report">
 
 </main>
 <footer>
@@ -72,7 +71,7 @@
       <li><a href="https://raw.githubusercontent.com/bocoup/wpt-error-report/master/consolidated.json">consolidated.json</a></li>
     </p>
     <p>
-      See <a href="https://github.com/GoogleChrome/wptdashboard/issues/98">GoogleChrome/wptdashboard/issues/98</a> for more discussion.
+      The above failures are responsible for the inconsistent test completion counts between browsers showing up in <a href="http://wpt.fyi">wpt.fyi</a>. See <a href="https://github.com/GoogleChrome/wptdashboard/issues/98">GoogleChrome/wptdashboard/issues/98</a> for more discussion on this.
     </p>
   </section>
 </footer>
