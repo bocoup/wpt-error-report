@@ -95,9 +95,9 @@ function toHTML(data) {
             ${didnotPercentFormated}%
           </figure>` : '';
 
-        let summary = `
-        <summary data-percent="${didnotPercentFormated}">
-          <span>${item}</span>
+
+        let summary = ct.stripIndent`
+        <summary data-percent="${didnotPercentFormated}"><span>${item}</span>
           <figure class="did-not">
             (${didNotRun.toLocaleString()} of
             ${expected.toLocaleString()} were not executed)
