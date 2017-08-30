@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (event.target.className === "toggle") {
         isOpen = !isOpen;
-        [...document.querySelectorAll("details")].forEach(detail => {
+        [...toIterable(document.querySelectorAll("details"))].forEach(detail => {
           detail.open = isOpen;
         });
         return;
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Setup results for sorting
-    let sortables = [...main.children];
+    let sortables = [...toIterable(main.children)];
 
     function sortByPercent(a, b) {
       let aPercent = parseInt(a.firstElementChild.dataset.percent);
@@ -148,13 +148,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function resultsToDOM(resultsArr) {
       main.innerHTML = '';
-      [...resultsArr].forEach(function(elem) {
+      [...toIterable(resultsArr)].forEach(function(elem) {
         main.appendChild(elem);
       });
     }
-
   }
 
+  function toIterable(iterable) {
+    if (!iterable[Symbol.iterator]) {
+      iterable[Symbol.iterator] = Array.prototype[Symbol.iterator];
+    }
+    return iterable;
+  }
 }, false);
 </script>
 </body>
