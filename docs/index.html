@@ -2,7 +2,6 @@
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="styles.css">
-  <link rel="import" href="results.html">
 </head>
 <body>
 <header>
@@ -48,8 +47,8 @@
 </header>
 <nav>
   <section>
-    <button class="toggle">Toggle All Results</button>
     <button class="sort" data-mode="by-percent">Sort Results by Percent Not Run</button>
+    <button class="toggle">Toggle All Results</button>
   </section>
 </nav>
 <main id="report">
@@ -77,34 +76,21 @@
 </footer>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  // create a reference to our main dynamic area in the report
+  let main = document.querySelector('main');
 
-  // Add results to DOM
-  let results = document.querySelector('link[rel="import"]');
-
-  if (!results.import) {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
-      injectResults(this.responseXML);
-    };
-    xhr.open("GET", "results.html");
-    xhr.responseType = "document";
-    xhr.send();
-  } else {
-    setTimeout(function() {
-      injectResults(results.import);
-    }, 0);
-  }
-
-  function injectResults(results) {
-    let nodes = results.querySelector('body').children;
-    let main = document.querySelector('main');
-    resultsToDOM(nodes);
-
-    //Bind toggle and sorts
+  // Get the results as string of HTML
+  fetch('results.html').then((response) => {
+    return response.text();
+  }).then((resultsFrag) => {
+    //put the results in to the DOM
+    main.innerHTML = resultsFrag;
+  }).then(() => {
+    //Bind toggle and sorting button handlers
     let isOpen = false;
     document.querySelector('body').addEventListener("click", (event) => {
       if (event.target.tagName !== "BUTTON") {
-        return
+        return;
       }
 
       if (event.target.className === "toggle") {
@@ -134,6 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Setup results for sorting
     let sortables = [...toIterable(main.children)];
 
+    // Logic for sorting by percent failures
     function sortByPercent(a, b) {
       let aPercent = parseInt(a.firstElementChild.dataset.percent);
       let bPercent = parseInt(b.firstElementChild.dataset.percent);
@@ -141,6 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return aPercent === bPercent ? 0 : (aPercent > bPercent ? -1 : 1);
     };
 
+    // Logic for sorting alphabetically
     function sortByAlpha(a, b) {
       let aText = a.firstElementChild.innerText.substr(0, 10);
       let bText = b.firstElementChild.innerText.substr(0, 10);
@@ -154,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
         main.appendChild(elem);
       });
     }
-  }
+  });
 
   function toIterable(iterable) {
     if (!iterable[Symbol.iterator]) {
