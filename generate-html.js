@@ -11,13 +11,8 @@ function toList(records) {
   return ct.stripIndent`
     <ul>
     ${records.map(record => `
-    <li>
-    <pre>
-      ${record.platform} @ ${record.sha}
-      ${record.disparity.expected - record.disparity.completed} of ${record.disparity.expected} were not executed.
-
-      Expected: ${record.disparity.expected}
-      Completed: ${record.disparity.completed}
+    <li><pre>${record.platform} @ <a href="http://wpt.fyi${record.test}" target=_blank>${record.sha}</a>
+    ${record.disparity.expected - record.disparity.completed} of ${record.disparity.expected} were not executed.
     </pre>
     </li>
     `).join('')}
@@ -78,8 +73,10 @@ function toHTML(data) {
   for (let item of keys) {
     if (typeof data[item] === "object") {
       if (Array.isArray(data[item])) {
-        let summary = `<summary>${item} (<a href="https://github.com/w3c/web-platform-tests/tree/master${data[item][0].test}" target=_blank>source</a>)</summary>`;
-        html += toDetails(summary, toList(data[item]));
+        let summary = ct.stripIndent`
+        <summary>${item} (<a href="https://github.com/w3c/web-platform-tests/tree/master${data[item][0].test}" target=_blank>source</a>)</summary>
+        `;
+        html += toDetails(summary.trim(), toList(data[item]));
       } else {
         let expected = total('expected', data[item]);
         let completed = total('completed', data[item]);
